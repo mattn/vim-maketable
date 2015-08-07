@@ -1,6 +1,6 @@
 # vim-maketable
 
-![](http://i.imgur.com/IcH9WRM.gif)
+![](http://i.imgur.com/joYGVe2.gif)
 
 ## Usage
 
