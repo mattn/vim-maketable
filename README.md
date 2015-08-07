@@ -7,7 +7,13 @@
 Just select lines and do following
 
 ```
-:'<,'>Table
+:'<,'>MakeTable
+```
+
+If you want to use first line as header of table, 
+
+```
+:'<,'>MakeTable!
 ```
 
 ## License
