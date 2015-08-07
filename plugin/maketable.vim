@@ -31,14 +31,16 @@ function! s:makeTable(bang, line1, line2, ...)
   for n in range(len(rows))
     let rows[n] = '|' . join(rows[n], '|') . '|'
   endfor
-  exe printf('%d,%dd _', a:line1, a:line2)
+  let pos = getpos('.')
+  silent exe printf('%d,%dd _', a:line1, a:line2)
   if a:bang =~ '!'
     call insert(rows, '|' . join(h, '|') . '|', 1)
   else
     call insert(rows, '|' . join(h, '|') . '|', 0)
     call insert(rows, '|' . substitute(join(h, '|'), '-', ' ', 'g') . '|', 0)
   endif
-  call setline(a:line1, rows)
+  silent call setline(a:line1, rows)
+  call setpos('.', pos)
 endfunction
 
-command! -bang -range -nargs=* MakeTable call s:makeTable("<bang>", <line1>, <line2>, "<f-args>")
+command! -bang -range -nargs=* MakeTable call s:makeTable("<bang>", <line1>, <line2>, <f-args>)
