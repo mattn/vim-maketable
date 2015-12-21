@@ -39,7 +39,7 @@ function! s:makeTable(bang, line1, line2, ...)
     call insert(rows, '|' . join(h, '|') . '|', 0)
     call insert(rows, '|' . substitute(join(h, '|'), '-', ' ', 'g') . '|', 0)
   endif
-  silent call setline(a:line1, rows)
+  silent call append(a:line1-1, rows)
   call setpos('.', pos)
 endfunction
 
