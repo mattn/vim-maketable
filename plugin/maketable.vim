@@ -57,8 +57,8 @@ function! s:unmakeTable()
     let end -= 1
   endif
   let lines = getline(start, end)
-  let lines = filter(lines, {x-> v:val !~ '^|[-|]\+|$'})
-  let lines = map(lines, {_, x-> substitute(v:val[1:-2], '|', ',', 'g')})
+  let lines = filter(lines, {x-> v:val !~ '^|[-:|]\+|$'})
+  let lines = map(lines, {_, x-> trim(substitute(v:val[1:-2], '\s*|\s*', ',', 'g'))})
   exe printf('%d,%d d_', start, end)
   normal! o
   call setline('.', lines)
