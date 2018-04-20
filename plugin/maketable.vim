@@ -43,4 +43,26 @@ function! s:makeTable(bang, line1, line2, ...)
   call setpos('.', pos)
 endfunction
 
+function! s:unmakeTable()
+  let start = search('^$', 'bcnW')
+  let end = search('^$', 'ncW')
+  if start == 0
+    let start = 1
+  else
+    let start += 1
+  endif
+  if end == 0
+    let end = line('$')
+  else
+    let end -= 1
+  endif
+  let lines = getline(start, end)
+  let lines = filter(lines, {x-> v:val !~ '^|[-|]\+|$'})
+  let lines = map(lines, {_, x-> substitute(v:val[1:-2], '|', ',', 'g')})
+  exe printf('%d,%d d_', start, end)
+  normal! o
+  call setline('.', lines)
+endfunction
+
 command! -bang -range -nargs=* MakeTable call s:makeTable("<bang>", <line1>, <line2>, <f-args>)
+command! -bang UnmakeTable call s:unmakeTable()
