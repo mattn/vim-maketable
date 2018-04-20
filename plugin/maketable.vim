@@ -1,6 +1,7 @@
 function! s:makeTable(bang, line1, line2, ...)
+  let sep = get(a:000, 0, ',')
   let ncols = 0
-  let rows = map(map(range(a:line1, a:line2), 'getline(v:val)'), 'split(v:val, ",")')
+  let rows = map(map(range(a:line1, a:line2), 'getline(v:val)'), 'split(v:val, sep)')
   if len(rows) <= 1 && len(rows[0]) == 1 && rows[0][0] == ''
     return
   endif
@@ -43,7 +44,8 @@ function! s:makeTable(bang, line1, line2, ...)
   call setpos('.', pos)
 endfunction
 
-function! s:unmakeTable()
+function! s:unmakeTable(...)
+  let sep = get(a:000, 0, ',')
   let start = search('^$', 'bcnW')
   let end = search('^$', 'ncW')
   if start == 0
@@ -58,10 +60,10 @@ function! s:unmakeTable()
   endif
   let lines = getline(start, end)
   let lines = filter(lines, {x-> v:val !~ '^|[-:|]\+|$'})
-  let lines = map(lines, {_, x-> trim(substitute(v:val[1:-2], '\s*|\s*', ',', 'g'))})
+  let lines = map(lines, {_, x-> trim(substitute(v:val[1:-2], '\s*|\s*', sep, 'g'))})
   exe printf('%d,%d d_', start, end)
   silent put! =lines
 endfunction
 
-command! -bang -range -nargs=* MakeTable call s:makeTable("<bang>", <line1>, <line2>, <f-args>)
-command! -bang UnmakeTable call s:unmakeTable()
+command! -bang -range -nargs=? MakeTable call s:makeTable("<bang>", <line1>, <line2>, <f-args>)
+command! -bang -nargs=? UnmakeTable call s:unmakeTable(<f-args>)
