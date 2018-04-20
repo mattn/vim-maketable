@@ -60,8 +60,7 @@ function! s:unmakeTable()
   let lines = filter(lines, {x-> v:val !~ '^|[-:|]\+|$'})
   let lines = map(lines, {_, x-> trim(substitute(v:val[1:-2], '\s*|\s*', ',', 'g'))})
   exe printf('%d,%d d_', start, end)
-  normal! o
-  call setline('.', lines)
+  silent put! =lines
 endfunction
 
 command! -bang -range -nargs=* MakeTable call s:makeTable("<bang>", <line1>, <line2>, <f-args>)
